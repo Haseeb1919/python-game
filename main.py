@@ -7,7 +7,7 @@ MIN_BET = 50
 
 #global variable for game board
 ROWS = 3
-COLS = 5
+COLS = 3
 
 symbol_count = {
     "A" : 2,
