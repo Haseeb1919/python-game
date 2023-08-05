@@ -10,12 +10,45 @@ ROWS = 3
 COLS = 3
 
 symbol_count = {
+
     "A" : 2,
     "B" : 4,
     "C" : 6,
     "D" : 8,
 
 }
+
+symbol_value = {
+
+    "A" : 5,
+    "B" : 4,
+    "C" : 3,
+    "D" : 2,
+
+}
+
+
+
+#fuction to check wining
+def check_win(columns, lines, bet,values):
+    winnings = 0
+    winnings_lines = []
+
+    # Check if all the symbols in the line are the same
+    for line in range(lines):
+        symbol = columns[0][line]
+        for column in columns:
+            symbol_to_check = column[line]
+            if symbol != symbol_to_check:
+                break
+        else:
+            winnings += values[symbol] * bet
+            winnings_lines.append(line + 1)
+    
+    return winnings, winnings_lines
+
+
+
 
 
 #function to spin the machine
@@ -49,6 +82,8 @@ def print_slot_machine(columns):
                 print(column[row], end="")
 
         print()
+
+
 
 #collecting user deposit information
 def deposit():
@@ -110,9 +145,7 @@ def get_bet(deposit_amount):
 
 
 
-#main function
-def main():
-    amount = deposit()
+def game(amount):  # Add 'amount' as an argument
     lines = number_of_line()
     bet = get_bet(deposit_amount=amount)
     total_bet = bet * lines
@@ -127,8 +160,108 @@ def main():
     # Print the bet information
     print("You have deposited " + str(amount) + " and you are betting on " + str(lines) + " lines with " + str(bet) + " each and total bet is equal to "+str(total_bet)+  ".")
     
-
+    #spining machine and printing the result
     slots = get_slot_machine_spin(ROWS, COLS, symbol_count)
     print_slot_machine(slots)
 
-main()
+    # Check if the user won print the winnings and the winning lines
+    winnings, winnings_lines = check_win(slots, lines, bet,symbol_value)
+    print("You won: " + str(winnings) + "!")
+    print("You won on lines: " + str(winnings_lines) + "!")
+
+    return winnings_lines - total_bet
+
+
+#main function
+def main():
+    amount = deposit()
+    while True:
+        print("You have " + str(amount) + " in your account.")
+        spin = input("Would you like to spin? (Y/N) ")
+        if spin.lower() == "y":
+            # Pass 'amount' to 'game()' function
+            amount += game(amount)
+        elif spin.lower() == "n":
+            print("You have " + str(amount) + " in your account.")
+            break
+    
+    print("Thank you for playing!")
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def game(amount):
+
+#     lines = number_of_line()
+#     bet = get_bet(deposit_amount=amount)
+#     total_bet = bet * lines
+
+#     # Check if the total bet exceeds the deposit amount
+#     while total_bet > amount:
+#         print("Your total bet amount exceeds your deposit amount. Please place your bets again your deposit amount is " + str(amount) + ".")
+#         lines = number_of_line()
+#         bet = get_bet(amount)
+#         total_bet = bet * lines
+
+#     # Print the bet information
+#     print("You have deposited " + str(amount) + " and you are betting on " + str(lines) + " lines with " + str(bet) + " each and total bet is equal to "+str(total_bet)+  ".")
+    
+#     #spining machine and printing the result
+#     slots = get_slot_machine_spin(ROWS, COLS, symbol_count)
+#     print_slot_machine(slots)
+
+#     # Check if the user won print the winnings and the winning lines
+#     winnings, winnings_lines = check_win(slots, lines, bet,symbol_value)
+#     print("You won: " + str(winnings) + "!")
+#     print("You won on lines: " + str(winnings_lines) + "!")
+
+#     return winnings_lines - total_bet
+
+
+
+
+
+
+# #main function
+# def main():
+#     amount = deposit()
+#     while True:
+#         print("You have " + str(amount) + " in your account.")
+#         spin = input("Would you like to spin? (Y/N) ")
+#         if spin.lower() == "y":
+#             amount += game()
+#         elif spin.lower() == "n":
+#             print("You have " + str(amount) + " in your account.")
+#             break
+    
+#     print("Thank you for playing!")
+    
+# main()
